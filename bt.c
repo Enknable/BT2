@@ -472,7 +472,7 @@ if(FD_ISSET(i, &write_fds)){
     buf2[numbytes2] = '\0';
     printf("listener: UDPpacket contains \"%s\"\n", BT.data);
             
-            
+            printf("%z\n", BT.sz);
             
             
             

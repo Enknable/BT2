@@ -12,6 +12,7 @@
 #include <sys/wait.h>
 #include <string.h>
 #include <signal.h>
+#include "bt.h"
 
 #define CHUNK_SIZE 2048
 #define PORT "3490"
@@ -296,6 +297,9 @@ int main ( int argc, char *argv[] )
     //RECEIVE CLIENT DATA ERROR
 // IFFDISSET
 if(FD_ISSET(i, &write_fds)){
+    
+                        
+    
                         if ((numbytes3=sendto(i, "FILE", 4, 0,
                             (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
                             perror("sendto");

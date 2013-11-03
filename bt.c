@@ -428,6 +428,7 @@ if(FD_ISSET(i, &write_fds)){
 
     freeaddrinfo(servinfo);
     
+    FD_SET(sockfd, &master);
      // add the listener to the master set
      fdmax = sockfd;
     
@@ -465,14 +466,14 @@ if(FD_ISSET(i, &write_fds)){
         exit(1);
     }
                     //CLIENT ASKING FOR MISSED PACKETS
-                }
-            printf("listenerUDP: waiting to recvfrom...\n");
+                
+            
 
         fp2 = fopen("Newfile", "w");
-        fseek(fp2, 80000, SEEK_SET);
-        fputc('8', fp2);
-        fclose(fp2);
-
+        fseek(fp2, BT.size, SEEK_SET);
+        fwrite('\n', 1, 1, fp2);
+}
+printf("listenerUDP: waiting to recvfrom...\n");
     addr_len2 = sizeof their_addr2;
     if ((numbytes2 = recvfrom(i, &BT, sizeof BT , 0,
         (struct sockaddr *)&their_addr2, &addr_len2)) == -1) {

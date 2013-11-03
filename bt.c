@@ -35,6 +35,8 @@ int main ( int argc, char *argv[] )
 {
     int vflag = 0;
     int pflag = 0;
+    int iflag = 0;
+    char *ivalue = NULL; 
     int pvalue = 0;
     int dflag = 0;
     double dvalue = 0;
@@ -61,7 +63,7 @@ int main ( int argc, char *argv[] )
     
        opterr = 0;
              
-       while ((c = getopt (argc, argv, "vhp:d:")) != -1)
+       while ((c = getopt (argc, argv, "vhp:d:i:")) != -1)
          switch (c)
            {
            case 'v':
@@ -73,6 +75,10 @@ int main ( int argc, char *argv[] )
              if(pvalue == 0)
                 fprintf(stderr, "Option -p requires an integer port value.\n", optarg);
              break;
+             case 'i':
+             iflag = 1;
+             ivalue = optarg;
+             break;
            case 'd':
              dflag = 1;
              dvalue = atof(optarg);
@@ -80,7 +86,7 @@ int main ( int argc, char *argv[] )
                 fprintf(stderr, "Option -d requires a fractional drop rate.\n", optarg);
              break;
            case 'h':
-               fprintf(stderr, "Usage: [OPTIONS]... [File]...\nSend files via UDP Broadcast packets\n-v         Verbose Output\n-p          --port number\n-d           -Drop Rate\n.");
+               fprintf(stderr, "Usage: [OPTIONS]... [File]...\nSend files via UDP Broadcast packets\n-v         Verbose Output\n-p          --port number\n-d           -Drop Rate\n-i      Server IP.");
              break;
            case '?':
              if (optopt == 'd')
@@ -217,6 +223,45 @@ int main ( int argc, char *argv[] )
 }// IFFDISSET
 }//FOR FD
 }//FOR..EVER
+}else{
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_UNSPEC;
+    hints.ai_socktype = SOCK_STREAM;
+
+    if ((rv = getaddrinfo(argv[1], PORT, &hints, &servinfo)) != 0) {
+        fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));
+        return 1;
+    }
+
+    // loop through all the results and connect to the first we can
+    for(p = servinfo; p != NULL; p = p->ai_next) {
+        if ((sockfd = socket(p->ai_family, p->ai_socktype,
+                p->ai_protocol)) == -1) {
+            perror("client: socket");
+            continue;
+        }
+
+        if (connect(sockfd, p->ai_addr, p->ai_addrlen) == -1) {
+            close(sockfd);
+            perror("client: connect");
+            continue;
+        }
+
+        break;
+    }
+
+    if (p == NULL) {
+        fprintf(stderr, "client: failed to connect\n");
+        return 2;
+    }
+
+    inet_ntop(p->ai_family, get_in_addr((struct sockaddr *)p->ai_addr),
+            s, sizeof s);
+    printf("client: connecting to %s\n", s);
+
+    freeaddrinfo(servinfo); // all done with this structure
+    
+    
 }
        return 0;
      }

@@ -276,7 +276,7 @@ int main ( int argc, char *argv[] )
                     
                     //////////////////////////////////////
                     }
-                }else{                  // HANDLE TCP ERROR MSGS
+                }/*else{                  // HANDLE TCP ERROR MSGS
                     if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0) {
                         // got error or connection closed by client
                         if (nbytes == 0) {
@@ -292,7 +292,7 @@ int main ( int argc, char *argv[] )
                 printf("HI");
                 //RECVFROM SQ# GETCHUNK SEND SQ#...MD5
         }//TCP TRANS
-    }//RECEIVE CLIENT DATA ERROR
+    /*}//RECEIVE CLIENT DATA ERROR
 }// IFFDISSET
 
 //while "X" the amount written so far < SIZEOFFILE/CHUNKSIZE 

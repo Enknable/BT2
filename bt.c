@@ -76,7 +76,7 @@ int main ( int argc, char *argv[] )
     int rv2;
     int numbytes2;
     struct sockaddr_storage their_addr2;
-    char buf2[MAXBUFLEN];
+    char buf3[MAXBUFLEN];
     socklen_t addr_len2;
     char s2[INET6_ADDRSTRLEN];
     int sockfd3;
@@ -507,7 +507,7 @@ printf("listenerUDP: waiting to recvfrom...\n");
             get_in_addr((struct sockaddr *)&their_addr2),
             s, sizeof s));
     printf("listener: UDPpacket is %d bytes long\n", numbytes2);
-    buf2[numbytes2] = '\0';
+    buf3[numbytes2] = '\0';
     //printf("listener: UDPpacket contains \"%s\"\n", BT.data);
             //fp = fopen("Newfile", "wb");
             //setbuf(fp, NULL);

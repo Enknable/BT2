@@ -312,6 +312,8 @@ if(FD_ISSET(i, &write_fds)){
                         md5End(&md, digest);
                         memcpy(&BT.md5, digest, sizeof(digest));
                         BT.length = bytes_written;
+                        if(BT.length == 0)
+                            FD_CLR(i, &master);
                         
                         if ((numbytes3=sendto(i, &BT, sizeof BT, 0,
                             (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {

@@ -314,6 +314,7 @@ int main ( int argc, char *argv[] )
 if(FD_ISSET(i, &write_fds)){
                         
                         memset(BT.data, 0, sizeof(BT.data));
+                        memset(BT.md5, 0, sizeof(BT.md5));
                         bytes_written = getChunk(sqNum, fp, BT.data, BT.sz);
                         printf("%lu\n", bytes_written);
                         sqNum++;

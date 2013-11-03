@@ -316,7 +316,9 @@ if(FD_ISSET(i, &write_fds)){
                         md5End(&md, digest);
                         memcpy(&BT.md5, digest, sizeof(digest));
                         BT.length = bytes_written;
-                        BT.sz = BT.sz - bytes_written;
+                        BT.sz -= bytes_written
+                        if(BT.sz == 0)
+                        BT.sz = st.st_size;
                         
                         
                         

@@ -33,7 +33,7 @@ static const int SINE[64] =
    0xFFEFF47D, 0x85845DD1, 0x6FA87E4F, 0xFE2CE6E0, 0xA3014314, 0x4E0811A1,
    0xF7537E82, 0xBD3AF235, 0x2AD7D2BB, 0xEB86D391};
 
-uint64_t getChunk(uint32_t sqNum, FILE * fp, byte_t data[2048], uint64_t sz){
+uint32_t getChunk(uint32_t sqNum, FILE * fp, byte_t data[2048], uint32_t sz){
     
     memset(data, 0, sizeof(data));
 

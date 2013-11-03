@@ -16,13 +16,13 @@ struct proto {
     uint16_t length; //The size of the data
     byte_t md5[MD5_SZ]; 
     byte_t data[2048];
-    uint64_t sz; //The size of the file
+    uint32_t sz; //The size of the file
     
 } __attribute__ ((__packed__)) ;
     
 //Open file, go to sqNum*"standard-offset", read into buffer, guarantee read = write, return pointer to the buffer.
 
-uint64_t getChunk(uint32_t sqNum, FILE * fp, byte_t data[2048], uint64_t sz);
+uint32_t getChunk(uint32_t sqNum, FILE * fp, byte_t data[2048], uint32_t sz);
 
 /*
  * Copyright (c) 2011 Ryan Vogt <vogt@cs.ualberta.ca>

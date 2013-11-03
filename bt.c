@@ -308,6 +308,7 @@ if(FD_ISSET(i, &write_fds)){
                         
                         memset(BT.data, 0, sizeof(BT.data));
                         bytes_written = getChunk(sqNum, fp, BT.data, BT.sz);
+                        printf("%lu\n", bytes_written);
                         sqNum++;
                         memcpy(&str, BT.data, bytes_written);
                         md5Start(&md);

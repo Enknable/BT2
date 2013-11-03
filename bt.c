@@ -88,6 +88,10 @@ int main ( int argc, char *argv[] )
     FILE *fp2;
     uint64_t bytes_written = 0; 
     uint32_t sqNum = 0;
+    struct md5CTX md;
+    byte_t digest[MD5_SZ];
+    byte_t str[2048];
+
     
        opterr = 0;
              
@@ -299,9 +303,16 @@ int main ( int argc, char *argv[] )
     //RECEIVE CLIENT DATA ERROR
 // IFFDISSET
 if(FD_ISSET(i, &write_fds)){
-    
-                        getChunk(sqNum, fp, BT.data, (uint64_t)st.st_size);
-    
+                        
+                        memset(BT.data, 0, sizeof(BT.data));
+                        bytes_written = getChunk(sqNum, fp, BT.data, (uint64_t)st.st_size);
+                        memcpy(&str, BT.data, bytes_written);
+                        md5Start(&md);
+                        md5Add(&md, str, sizeof(str));
+                        md5End(&md, digest);
+                        memcpy(&BT.md5, digest, sizeof(digest));
+                        BT.length = bytes_written;
+                        
                         if ((numbytes3=sendto(i, &BT, sizeof BT, 0,
                             (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
                             perror("sendto");
@@ -435,6 +446,12 @@ if(FD_ISSET(i, &write_fds)){
         perror("recvfromUDP");
         exit(1);
     }
+    
+    memcpy(&str, BT.data, BT.length);
+    md5Start(&md);
+    md5Add(&md, str, sizeof(str));
+    md5End(&md, digest);
+    
     printf("listenerUDP: got packet from %s\n",
         inet_ntop(their_addr2.ss_family,
             get_in_addr((struct sockaddr *)&their_addr2),

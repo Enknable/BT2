@@ -83,7 +83,8 @@ int main ( int argc, char *argv[] )
     int numbytes3;
     int broadcast3 = 1;
     //char broadcast3 = '1'; // if that doesn't work, try this
-    FILE * fp, fp2;
+    FILE * fp;
+    FILE *fp2;
     uint64_t bytes_written = 0; 
 
     

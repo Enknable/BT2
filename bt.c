@@ -298,7 +298,7 @@ int main ( int argc, char *argv[] )
     if(FD_ISSET(i, &write_fds)){
         if ((numbytes3=sendto(i, "FILE", 4, 0,
              (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
-        perror("sendto");
+        perror("sendto2");
         exit(1);
     }
 

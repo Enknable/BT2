@@ -82,6 +82,8 @@ int main ( int argc, char *argv[] )
     int numbytes3;
     int broadcast3 = 1;
     //char broadcast3 = '1'; // if that doesn't work, try this
+    FILE * fp, fp2;
+    uint64_t bytes_written = 0; 
 
     
        opterr = 0;
@@ -137,6 +139,9 @@ int main ( int argc, char *argv[] )
          if(argv[optind] != NULL)       {                                                                                                                //Holds the filename//Determines Server or Receiver
          if (stat(argv[optind], &st) == 0)
             printf("%jd\n", (intmax_t)st.st_size);                                                                                                      //Hold the size of the file
+            
+            fp = fopen(argv[optind], "rb");
+    
     
     FD_ZERO(&master);    // clear the master and temp sets
     FD_ZERO(&read_fds);
@@ -225,7 +230,7 @@ int main ( int argc, char *argv[] )
                         perror("accept");
                     } else {
                         FD_SET(new_fd, &master); // add to master set
-                        if (new_fd > fdmax) {    // keep track of the max
+                        if (new_fd > fdmax)    // keep track of the max
                             fdmax = new_fd;
                         }
                         printf("selectserver: new connection from %s on "
@@ -248,7 +253,11 @@ int main ( int argc, char *argv[] )
     if ((sockfd3 = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
         perror("socket");
         exit(1);
-    }
+    } else {
+                        FD_SET(sockfd3, &master); // add to master set
+                        if (sockfd3 > fdmax) {    // keep track of the max
+                            fdmax = sockfd3;
+                        }
 
     // this call is what allows broadcast packets to be sent:
     if (setsockopt(sockfd3, SOL_SOCKET, SO_BROADCAST, &broadcast3,
@@ -261,25 +270,13 @@ int main ( int argc, char *argv[] )
     their_addr3.sin_port = htons(SERVERPORT); // short, network byte order
     their_addr3.sin_addr = *((struct in_addr *)he3->h_addr);
     memset(their_addr3.sin_zero, '\0', sizeof their_addr3.sin_zero);
-
-    if ((numbytes3=sendto(sockfd3, "FILE", 4, 0,
-             (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
-        perror("sendto");
-        exit(1);
-    }
-
-    printf("sent %d bytes to %s\n", numbytes3,
-        inet_ntoa(their_addr3.sin_addr));
-
-    close(sockfd3);
                     
-                    
-                    
+                
                     
                     
                     //////////////////////////////////////
                     }
-                }else{                  // handle data from a client:error
+                }else{                  // HANDLE TCP ERROR MSGS
                     if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0) {
                         // got error or connection closed by client
                         if (nbytes == 0) {
@@ -292,9 +289,24 @@ int main ( int argc, char *argv[] )
                         FD_CLR(i, &master); // remove from master set //else this is the missed packet retrieval
             } else{   
                 //handle TCP SEQUENCE TRANSMISSION REQUESTS
+                //RECVFROM SQ# GETCHUNK SEND SQ#...MD5
         }//TCP TRANS
     }//RECEIVE CLIENT DATA ERROR
 }// IFFDISSET
+
+//while "X" the amount written so far < SIZEOFFILE/CHUNKSIZE 
+    if(FD_ISSET(i, &write_fds){
+        if ((numbytes3=sendto(sockfd3, "FILE", 4, 0,
+             (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
+        perror("sendto");
+        exit(1);
+    }
+
+    printf("sent %d bytes to %s\n", numbytes3,
+        inet_ntoa(their_addr3.sin_addr));
+        
+    }
+
 }//FOR FD
 }//FOR..EVER
 }else{                                                              // CLIENT  -- ADD SOCKFD to the master set for writing, CREATE A UDP SOCKET AND add it to the master set for READING

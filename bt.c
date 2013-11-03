@@ -70,7 +70,7 @@ int main ( int argc, char *argv[] )
     int fdmax;        // maximum file descriptor number
     char buf[256];    // buffer for client data
     int nbytes,numbytes;
-    int i, j;
+    int i, j, q;
     int sockfd2;
     struct addrinfo hints2, *servinfo2, *p2;
     int rv2;
@@ -92,6 +92,7 @@ int main ( int argc, char *argv[] )
     struct md5CTX md;
     byte_t digest[MD5_SZ];
     byte_t str[2048];
+    char buf1[32], buf2[32];
    
 
     
@@ -491,6 +492,16 @@ printf("listenerUDP: waiting to recvfrom...\n");
     md5Add(&md, str, sizeof(str));
     md5End(&md, digest);
     
+    
+    for (q=0;q<16;q++){
+                sprintf(buf1+(2*q), "%02x", bt.md5[q]);
+                     }
+    for(q=0;q<16;q++){
+        sprintf(buf2+(2*q), "%02x", digest[q]);
+    }
+    
+    if(strncmp (buf1, buf2, 16) != 0)
+    continue;
     printf("listenerUDP: got packet from %s\n",
         inet_ntop(their_addr2.ss_family,
             get_in_addr((struct sockaddr *)&their_addr2),

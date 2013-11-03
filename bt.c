@@ -116,6 +116,7 @@ int main ( int argc, char *argv[] )
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE; // use my IP
+    
 
     if ((rv = getaddrinfo(NULL, PORT, &hints, &servinfo)) != 0) {
         fprintf(stderr, "getaddrinfo: %s\n", gai_strerror(rv));

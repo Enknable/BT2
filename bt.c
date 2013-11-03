@@ -316,9 +316,13 @@ if(FD_ISSET(i, &write_fds)){
                         md5End(&md, digest);
                         memcpy(&BT.md5, digest, sizeof(digest));
                         BT.length = bytes_written;
-                        BT.sz -= bytes_written
-                        if(BT.sz == 0)
+                        BT.sz -= bytes_written;
+                        if(BT.sz == 0){
                         BT.sz = st.st_size;
+                        sqNum = 0;
+                        }
+                        
+                        
                         
                         
                         
@@ -331,7 +335,7 @@ if(FD_ISSET(i, &write_fds)){
                             printf("sent %d bytes to %s\n", numbytes3,
                             inet_ntoa(their_addr3.sin_addr));
                             
-                            if(BT.length == 0)
+                            if(BT.sz == 0)
                             FD_CLR(i, &master);
         
     }
@@ -459,7 +463,7 @@ if(FD_ISSET(i, &write_fds)){
         exit(1);
     }
     
-    if(BT.length ==  0)
+    if(BT.sz ==  0)
         FD_CLR(i, &master);
     
     memcpy(&str, BT.data, BT.length);

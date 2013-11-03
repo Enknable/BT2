@@ -468,10 +468,10 @@ if(FD_ISSET(i, &write_fds)){
                 }
             printf("listenerUDP: waiting to recvfrom...\n");
 
-        fp2 = fopen(BT.name, "wb");
+        fp2 = fopen(BT.name, "w");
         fseek(fp2, BT.sz, SEEK_SET);
-        fputc('\n', fp);
-        fclose(fp);
+        fputc('\n', fp2);
+        fclose(fp2);
 
     addr_len2 = sizeof their_addr2;
     if ((numbytes2 = recvfrom(i, &BT, sizeof BT , 0,
@@ -496,7 +496,7 @@ if(FD_ISSET(i, &write_fds)){
     buf2[numbytes2] = '\0';
     printf("listener: UDPpacket contains \"%s\"\n", BT.data);
             fopen(BT.name, "wb");
-            fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
+            fseek(fp2, BT.sqNum*CHUNK_SIZE, SEEK_SET);
             fwrite(BT.data, BT.length, 1, fp2);
             printf("%llu\n", BT.sz);
             

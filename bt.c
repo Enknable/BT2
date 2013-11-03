@@ -86,7 +86,7 @@ int main ( int argc, char *argv[] )
     //char broadcast3 = '1'; // if that doesn't work, try this
     FILE * fp;
     FILE *fp2;
-    uint64_t bytes_written = 0; 
+    uint32_t bytes_written = 0; 
     uint32_t sqNum = 0;
     struct md5CTX md;
     byte_t digest[MD5_SZ];

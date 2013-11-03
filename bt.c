@@ -16,6 +16,9 @@
 #define CHUNK_SIZE 2048
 #define PORT "3490"
 #define MAXDATASIZE 100 // max number of bytes we can get at once 
+#define MYPORT "4950"    // the port users will be connecting to
+
+#define MAXBUFLEN 100
 
 void sigchld_handler(int s)
 {
@@ -61,6 +64,15 @@ int main ( int argc, char *argv[] )
     char buf[256];    // buffer for client data
     int nbytes,numbytes;
     int i, j;
+    int sockfd2;
+    struct addrinfo hint2s, *servinfo2, *p2;
+    int rv2;
+    int numbytes2;
+    struct sockaddr_storage their_addr2;
+    char buf2[MAXBUFLEN];
+    socklen_t addr_len2;
+    char s2[INET6_ADDRSTRLEN];
+
     
        opterr = 0;
              
@@ -225,7 +237,7 @@ int main ( int argc, char *argv[] )
 }// IFFDISSET
 }//FOR FD
 }//FOR..EVER
-}else{
+}else{                                                              // CLIENT  -- ADD SOCKFD to the master set for writing, CREATE A UDP SOCKET AND add it to the master set for READING
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -274,7 +286,60 @@ int main ( int argc, char *argv[] )
 
     close(sockfd);
     
+    /////////////////////////////////
     
+    memset(&hints2, 0, sizeof hints2);
+    hints.ai_family = AF_UNSPEC; // set to AF_INET to force IPv4
+    hints.ai_socktype = SOCK_DGRAM;
+    hints.ai_flags = AI_PASSIVE; // use my IP
+
+    if ((rv2 = getaddrinfo(NULL, MYPORT, &hints2, &servinfo2)) != 0) {
+        fprintf(stderr, "getaddrinfoUDP: %s\n", gai_strerror(rv));
+        return 1;
+    }
+
+    // loop through all the results and bind to the first we can
+    for(p2 = servinfo; p2 != NULL; p2 = p2->ai_next) {
+        if ((sockfd2 = socket(p2->ai_family, p2->ai_socktype,
+                p2->ai_protocol)) == -1) {
+            perror("listenerUDP: socket");
+            continue;
+        }
+
+        if (bind(sockfd2, p2->ai_addr, p2->ai_addrlen) == -1) {
+            close(sockfd2);
+            perror("listenerUDP: bind");
+            continue;
+        }
+
+        break;
+    }
+
+    if (p2 == NULL) {
+        fprintf(stderr, "listenerUDP: failed to bind socket\n");
+        return 2;
+    }
+
+    freeaddrinfo(servinfo);
+
+    printf("listenerUDP: waiting to recvfrom...\n");
+
+    addr_len2 = sizeof their_addr2;
+    if ((numbytes2 = recvfrom(sockfd2, buf2, MAXBUFLEN-1 , 0,
+        (struct sockaddr *)&their_addr2, &addr_len2)) == -1) {
+        perror("recvfromUDP");
+        exit(1);
+    }
+
+    printf("listenerUDP: got packet from %s\n",
+        inet_ntop(their_addr2.ss_family,
+            get_in_addr((struct sockaddr *)&their_addr2),
+            s, sizeof s));
+    printf("listener: UDPpacket is %d bytes long\n", numbytes2);
+    buf2[numbytes] = '\0';
+    printf("listener: UDPpacket contains \"%s\"\n", buf2);
+
+    close(sockfd2);
 }
        return 0;
      }

@@ -249,6 +249,7 @@ int main ( int argc, char *argv[] )
                                 s, INET6_ADDRSTRLEN),
                             new_fd);
 
+                        BT.sqNum = 0;
                     if (send(new_fd, &BT, sizeof BT, 0) == -1){
                 perror("send");
             close(new_fd);

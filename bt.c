@@ -58,7 +58,7 @@ int main ( int argc, char *argv[] )
     fd_set write_fds;
     int fdmax;        // maximum file descriptor number
     char buf[256];    // buffer for client data
-    int nbytes;
+    int nbytes,numbytes;
     int i, j;
     
        opterr = 0;

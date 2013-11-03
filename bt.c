@@ -148,7 +148,7 @@ int main ( int argc, char *argv[] )
          if (stat(argv[optind], &st) == 0)
             printf("%jd\n", (intmax_t)st.st_size);                                                                                                      //Hold the size of the file
             
-            BT.sz = (uint64_t)st.st_size;
+            BT.sz = st.st_size;
             fp = fopen(argv[optind], "rb");
     
     

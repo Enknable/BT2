@@ -502,8 +502,8 @@ printf("listenerUDP: waiting to recvfrom...\n");
             //setbuf(fp, NULL);
             //fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
             //fwrite(BT.data, 1, BT.length, fp);
-            lseek(fp2, BT.sqNum*CHUNK_SIZE, SEEK_SET);
-            //write(fp2,BT.data, BT.length);
+            lseek(fp2, (BT.sqNum-1)*CHUNK_SIZE, SEEK_SET);
+            write(fp2,BT.data, BT.length);
         
             
             printf("%s\n", BT.data);

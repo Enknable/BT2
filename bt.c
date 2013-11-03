@@ -239,7 +239,7 @@ int main ( int argc, char *argv[] )
                     
 
 
-    if ((he3=gethostbyname(ivalue) == NULL) {  // get the host info
+    if ((he3=gethostbyname(ivalue)) == NULL) {  // get the host info
         perror("gethostbyname");
         exit(1);
     }

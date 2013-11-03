@@ -289,6 +289,7 @@ int main ( int argc, char *argv[] )
                         FD_CLR(i, &master); // remove from master set //else this is the missed packet retrieval
             } else{   
                 //handle TCP SEQUENCE TRANSMISSION REQUESTS
+                printf("HI");
                 //RECVFROM SQ# GETCHUNK SEND SQ#...MD5
         }//TCP TRANS
     }//RECEIVE CLIENT DATA ERROR

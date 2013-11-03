@@ -470,7 +470,8 @@ if(FD_ISSET(i, &write_fds)){
 
         fp2 = fopen(BT.name, "wb");
         fseek(fp2, BT.sz, SEEK_SET);
-
+        fputc('\n', fp);
+        fclose(fp);
 
     addr_len2 = sizeof their_addr2;
     if ((numbytes2 = recvfrom(i, &BT, sizeof BT , 0,
@@ -494,6 +495,7 @@ if(FD_ISSET(i, &write_fds)){
     printf("listener: UDPpacket is %d bytes long\n", numbytes2);
     buf2[numbytes2] = '\0';
     printf("listener: UDPpacket contains \"%s\"\n", BT.data);
+            fopen(BT.name, "wb");
             fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
             fwrite(BT.data, BT.length, 1, fp2);
             printf("%llu\n", BT.sz);

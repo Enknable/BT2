@@ -492,6 +492,10 @@ printf("listenerUDP: waiting to recvfrom...\n");
     md5Add(&md, str, sizeof(str));
     md5End(&md, digest);
     
+    memset(buf1, 0, sizeof(buf1));
+    
+    memset(buf2, 0, sizeof(buf2));
+    
     
     for (q=0;q<16;q++){
                 sprintf(buf1+(2*q), "%02x", BT.md5[q]);

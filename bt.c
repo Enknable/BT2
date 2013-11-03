@@ -350,8 +350,6 @@ if(FD_ISSET(i, &write_fds)){
 }//FOR..EVER
 }else{           // CLIENT  -- ADD SOCKFD to the master set for writing, CREATE A UDP SOCKET AND add it to the master set for READING
     
-    fp2 = fopen(BT.name, "wb");
-    fseek(fp2, BT.sz, SEEK_SET);
     
     
     FD_ZERO(&master);    // clear the master and temp sets
@@ -469,6 +467,10 @@ if(FD_ISSET(i, &write_fds)){
                     //CLIENT ASKING FOR MISSED PACKETS
                 }
             printf("listenerUDP: waiting to recvfrom...\n");
+
+        fp2 = fopen(BT.name, "wb");
+        fseek(fp2, BT.sz, SEEK_SET);
+
 
     addr_len2 = sizeof their_addr2;
     if ((numbytes2 = recvfrom(i, &BT, sizeof BT , 0,

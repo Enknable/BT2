@@ -468,7 +468,7 @@ if(FD_ISSET(i, &write_fds)){
                 }
             printf("listenerUDP: waiting to recvfrom...\n");
 
-        fp2 = fopen(BT.name, "w");
+        fp2 = fopen("Newfile", "w");
         fseek(fp2, BT.sz, SEEK_SET);
         fputc('\n', fp2);
         fclose(fp2);

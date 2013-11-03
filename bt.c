@@ -40,6 +40,7 @@ void *get_in_addr(struct sockaddr *sa)
 
 int main ( int argc, char *argv[] )
 {
+    struct proto BT;
     int vflag = 0;
     int pflag = 0;
     int iflag = 0;
@@ -86,7 +87,7 @@ int main ( int argc, char *argv[] )
     FILE * fp;
     FILE *fp2;
     uint64_t bytes_written = 0; 
-
+    uint32_t sqNum = 0;
     
        opterr = 0;
              
@@ -299,9 +300,9 @@ int main ( int argc, char *argv[] )
 // IFFDISSET
 if(FD_ISSET(i, &write_fds)){
     
-                        
+                        getChunk(sqNum, fp, BT.data, (uint64_t)st.st_size);
     
-                        if ((numbytes3=sendto(i, "FILE", 4, 0,
+                        if ((numbytes3=sendto(i, &BT, sizeof BT, 0,
                             (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
                             perror("sendto");
                             exit(1);
@@ -429,7 +430,7 @@ if(FD_ISSET(i, &write_fds)){
             printf("listenerUDP: waiting to recvfrom...\n");
 
     addr_len2 = sizeof their_addr2;
-    if ((numbytes2 = recvfrom(i, buf2, MAXBUFLEN-1 , 0,
+    if ((numbytes2 = recvfrom(i, &BT, sizeof BT , 0,
         (struct sockaddr *)&their_addr2, &addr_len2)) == -1) {
         perror("recvfromUDP");
         exit(1);
@@ -440,7 +441,7 @@ if(FD_ISSET(i, &write_fds)){
             s, sizeof s));
     printf("listener: UDPpacket is %d bytes long\n", numbytes2);
     buf2[numbytes2] = '\0';
-    printf("listener: UDPpacket contains \"%s\"\n", buf2);
+    printf("listener: UDPpacket contains \"%s\"\n", BT.data);
             
             
             

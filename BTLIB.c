@@ -11,7 +11,7 @@
 
 #define CHUNK_SIZE 2048
 
-uint16_t getChunk(uint32_t sqNum, FILE * fp, byte_t data[2048], uint16_t sz){
+uint64_t getChunk(uint32_t sqNum, FILE * fp, byte_t data[2048], uint64_t sz){
     
     memset(data, 0, sizeof(data));
 

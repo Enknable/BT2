@@ -500,12 +500,12 @@ printf("listenerUDP: waiting to recvfrom...\n");
         sprintf(buf2+(2*q), "%02x", digest[q]);
     }
     
-    //if(strncmp (buf1, buf2, 16) != 0){
-      //      printf("%s\n", buf1);
-        //    printf("%s\n", buf2);
-    //}
-    if(strncmp(buf1, buf2, 16) != 0)
-    continue;
+    if(strncmp(buf1, buf2, 16) != 0){
+            printf("%s\n", buf1);
+            printf("%s\n", buf2);
+    }
+    //if(strncmp(buf1, buf2, 16) != 0)
+    //continue;
     printf("listenerUDP: got packet from %s\n",
         inet_ntop(their_addr2.ss_family,
             get_in_addr((struct sockaddr *)&their_addr2),

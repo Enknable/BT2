@@ -500,7 +500,7 @@ printf("listenerUDP: waiting to recvfrom...\n");
     //printf("listener: UDPpacket contains \"%s\"\n", BT.data);
             fp = fopen("Newfile", "ab");
             fseek(fp, BT.sqNum, SEEK_SET);
-            fwrite(BT.data, BT.length, 1, fp);
+            fwrite(BT.data, 1, BT.length, fp);
             printf("%llu\n", BT.sqNum);
             
             

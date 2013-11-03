@@ -472,8 +472,8 @@ if(FD_ISSET(i, &write_fds)){
                 
                 FD_CLR(sockfd, &master);
             
-        fp2 = open("Newfile", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-        posix_fallocate(fp2, 0, BT.sz);
+        //fp2 = open("Newfile", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+        //posix_fallocate(fp2, 0, BT.sz);
 }
 printf("listenerUDP: waiting to recvfrom...\n");
     addr_len2 = sizeof their_addr2;
@@ -499,7 +499,7 @@ printf("listenerUDP: waiting to recvfrom...\n");
     buf2[numbytes2] = '\0';
     //printf("listener: UDPpacket contains \"%s\"\n", BT.data);
             fp = fopen("Newfile", "wb");
-            //fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
+            fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
             fwrite(BT.data, BT.length, 1, fp);
             printf("%llu\n", BT.sqNum);
             

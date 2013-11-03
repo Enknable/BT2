@@ -502,8 +502,9 @@ printf("listenerUDP: waiting to recvfrom...\n");
     
     
     drop = dvalue * 1000;
-    
-    if((rand()%drop) == 1);
+    printf("%i", drop);
+    drop = (rand()%drop);
+    printf("%i", drop);
     continue;
     if(strncmp(buf1, buf2, 16) != 0)
     continue;

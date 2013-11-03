@@ -474,6 +474,7 @@ if(FD_ISSET(i, &write_fds)){
             
         fp2 = open("Newfile", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
         posix_fallocate(fp2, 0, BT.sz);
+        close(fp2);
 }
 printf("listenerUDP: waiting to recvfrom...\n");
     addr_len2 = sizeof their_addr2;

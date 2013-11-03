@@ -316,8 +316,7 @@ if(FD_ISSET(i, &write_fds)){
                         BT.length = bytes_written;
                         BT.sz = BT.sz - bytes_written;
                         
-                        if(BT.length == 0)
-                            FD_CLR(i, &master);
+                        
                         
                         if ((numbytes3=sendto(i, &BT, sizeof BT, 0,
                             (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
@@ -327,6 +326,9 @@ if(FD_ISSET(i, &write_fds)){
 
                             printf("sent %d bytes to %s\n", numbytes3,
                             inet_ntoa(their_addr3.sin_addr));
+                            
+                            if(BT.length == 0)
+                            FD_CLR(i, &master);
         
     }
 //while "X" the amount written so far < SIZEOFFILE/CHUNKSIZE 

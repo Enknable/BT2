@@ -21,6 +21,7 @@
 #define MYPORT "4950"    // the port users will be connecting to
 #define SERVERPORT 4950    // the port users will be connecting to
 
+#define MD5_SZ (128 / 8)
 
 #define MAXBUFLEN 100
 
@@ -510,8 +511,8 @@ printf("listenerUDP: waiting to recvfrom...\n");
        //     printf("%s\n", buf1);
      //       printf("%s\n", buf2);
     //}
-    //if(strncmp(buf1, buf2, 16) != 0)
-    //continue;
+    if(strncmp(buf1, buf2, 16) != 0)
+    continue;
     printf("listenerUDP: got packet from %s\n",
         inet_ntop(their_addr2.ss_family,
             get_in_addr((struct sockaddr *)&their_addr2),

@@ -15,6 +15,7 @@
 
 #define CHUNK_SIZE 2048
 #define PORT "3490"
+#define MAXDATASIZE 100 // max number of bytes we can get at once 
 
 void sigchld_handler(int s)
 {

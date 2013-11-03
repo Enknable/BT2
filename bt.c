@@ -113,7 +113,8 @@ int main ( int argc, char *argv[] )
              break;
            case 'p':
              pflag = 1;
-             pvalue = atoi(optarg);
+             PORT = atoi(optarg);
+             
              if(pvalue == 0)
                 fprintf(stderr, "Option -p requires an integer port value.\n", optarg);
              break;

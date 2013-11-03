@@ -308,7 +308,6 @@ if(FD_ISSET(i, &write_fds)){
     }
 //while "X" the amount written so far < SIZEOFFILE/CHUNKSIZE 
     
-}
 }//FOR FD
 }//FOR..EVER
 }else{           // CLIENT  -- ADD SOCKFD to the master set for writing, CREATE A UDP SOCKET AND add it to the master set for READING

@@ -460,9 +460,14 @@ if(FD_ISSET(i, &write_fds)){
     
     for(i = 0; i <= fdmax; i++) {
             if (FD_ISSET(i, &read_fds)) { // we got one!!
-                //if (i == sockfd) {
+                if (i == sockfd) {
+                
+                if ((numbytes = recv(sockfd, &BT, sizeof BT, 0)) == -1) {
+        perror("recv");
+        exit(1);
+    }
                     //CLIENT ASKING FOR MISSED PACKETS
-                //}
+                }
             printf("listenerUDP: waiting to recvfrom...\n");
 
     addr_len2 = sizeof their_addr2;

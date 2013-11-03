@@ -17,6 +17,7 @@ struct proto {
     byte_t md5[MD5_SZ]; 
     byte_t data[2048];
     uint32_t sz; //The size of the file
+    char name[26];
     
 } __attribute__ ((__packed__)) ;
     

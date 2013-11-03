@@ -456,8 +456,8 @@ if(FD_ISSET(i, &write_fds)){
         exit(1);
     }
     
-    if(BT.length ==  0)
-        FD_CLR(i, &master);
+    //if(BT.length ==  0)
+      //  FD_CLR(i, &master);
     
     memcpy(&str, BT.data, BT.length);
     md5Start(&md);

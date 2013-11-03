@@ -498,9 +498,9 @@ printf("listenerUDP: waiting to recvfrom...\n");
     printf("listener: UDPpacket is %d bytes long\n", numbytes2);
     buf2[numbytes2] = '\0';
     //printf("listener: UDPpacket contains \"%s\"\n", BT.data);
-            fp = fopen("Newfile", "ab");
+            fp = fopen("Newfile", "wb");
             setbuf(fp, NULL);
-            fseek(fp, BT.sqNum, SEEK_SET);
+            fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
             fwrite(BT.data, 1, BT.length, fp);
             printf("%llu\n", BT.sqNum);
             

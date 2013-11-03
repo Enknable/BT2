@@ -295,10 +295,11 @@ int main ( int argc, char *argv[] )
 }// IFFDISSET
 
 //while "X" the amount written so far < SIZEOFFILE/CHUNKSIZE 
+    if(i != sockfd)
     if(FD_ISSET(i, &write_fds)){
         if ((numbytes3=sendto(i, "FILE", 4, 0,
              (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
-        perror("sendto2");
+        perror("sendto");
         exit(1);
     }
 

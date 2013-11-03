@@ -276,8 +276,19 @@ int main ( int argc, char *argv[] )
                     
                     //////////////////////////////////////
                     }
-                }/*else{                  // HANDLE TCP ERROR MSGS
-                    if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0) {
+                }else{
+                    if(FD_ISSET(i, &write_fds)){
+                        if ((numbytes3=sendto(i, "FILE", 4, 0,
+                            (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
+                            perror("sendto");
+                            exit(1);
+                    }
+
+                            printf("sent %d bytes to %s\n", numbytes3,
+                            inet_ntoa(their_addr3.sin_addr));
+        
+    }                  // HANDLE TCP ERROR MSGS
+                    /*if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0) {
                         // got error or connection closed by client
                         if (nbytes == 0) {
                             // connection closed
@@ -291,23 +302,13 @@ int main ( int argc, char *argv[] )
                 //handle TCP SEQUENCE TRANSMISSION REQUESTS
                 printf("HI");
                 //RECVFROM SQ# GETCHUNK SEND SQ#...MD5
-        }//TCP TRANS
-    /*}//RECEIVE CLIENT DATA ERROR
+       */ }//TCP TRANS
+    }//RECEIVE CLIENT DATA ERROR
 }// IFFDISSET
 
 //while "X" the amount written so far < SIZEOFFILE/CHUNKSIZE 
     if(i != sockfd)
-    if(FD_ISSET(i, &write_fds)){
-        if ((numbytes3=sendto(i, "FILE", 4, 0,
-             (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
-        perror("sendto");
-        exit(1);
-    }
-
-    printf("sent %d bytes to %s\n", numbytes3,
-        inet_ntoa(their_addr3.sin_addr));
-        
-    }
+    
 
 }//FOR FD
 }//FOR..EVER

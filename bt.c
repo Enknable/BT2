@@ -17,6 +17,8 @@
 #define PORT "3490"
 #define MAXDATASIZE 100 // max number of bytes we can get at once 
 #define MYPORT "4950"    // the port users will be connecting to
+#define SERVERPORT 4950    // the port users will be connecting to
+
 
 #define MAXBUFLEN 100
 
@@ -40,6 +42,8 @@ int main ( int argc, char *argv[] )
     int vflag = 0;
     int pflag = 0;
     int iflag = 0;
+    int bflag = 0;
+    char *bvalue = NULL;
     char *ivalue = NULL; 
     int pvalue = 0;
     int dflag = 0;
@@ -72,13 +76,23 @@ int main ( int argc, char *argv[] )
     char buf2[MAXBUFLEN];
     socklen_t addr_len2;
     char s2[INET6_ADDRSTRLEN];
+    int sockfd3;
+    struct sockaddr_in their_addr3; // connector's address information
+    struct hostent *he3;
+    int numbytes3;
+    int broadcast3 = 1;
+    //char broadcast3 = '1'; // if that doesn't work, try this
 
     
        opterr = 0;
              
-       while ((c = getopt (argc, argv, "vhp:d:i:")) != -1)
+       while ((c = getopt (argc, argv, "vhp:d:i:b:")) != -1)
          switch (c)
            {
+           case 'b':
+              bflag = 1;
+              bvalue = optarg;
+              break;
            case 'v':
              vflag = 1;
              break;
@@ -99,11 +113,13 @@ int main ( int argc, char *argv[] )
                 fprintf(stderr, "Option -d requires a fractional drop rate.\n", optarg);
              break;
            case 'h':
-               fprintf(stderr, "Usage: [OPTIONS]... [File]...\nSend files via UDP Broadcast packets\n-v         Verbose Output\n-p          --port number\n-d           -Drop Rate\n-i      Server IP.");
+               fprintf(stderr, "Usage: [OPTIONS]... [File]...\nSend files via UDP Broadcast packets\n-v         Verbose Output\n-p          --port number\n-d           -Drop Rate\n-i      Server IP.\n-b        BroadCast Address");
              break;
            case '?':
              if (optopt == 'd')
                fprintf (stderr, "Option -%c requires an argument.\n", optopt);
+             else if (optopt == 'b')
+                fprintf( stderr, "Option -%c requires a Broadcast address argument.\n", optopt);
              else if (optopt == 'p')
                fprintf (stderr, "Option -%c requires an argument.\n", optopt);
              else if (isprint (optopt))
@@ -218,6 +234,49 @@ int main ( int argc, char *argv[] )
                                 get_in_addr((struct sockaddr*)&remoteaddr),
                                 s, INET6_ADDRSTRLEN),
                             new_fd);
+                    
+                    //////////////////////////////////////
+                    
+
+
+    if ((he3=gethostbyname(ivalue) == NULL) {  // get the host info
+        perror("gethostbyname");
+        exit(1);
+    }
+
+    if ((sockfd3 = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
+        perror("socket");
+        exit(1);
+    }
+
+    // this call is what allows broadcast packets to be sent:
+    if (setsockopt(sockfd3, SOL_SOCKET, SO_BROADCAST, &broadcast3,
+        sizeof broadcast3) == -1) {
+        perror("setsockopt (SO_BROADCAST)");
+        exit(1);
+    }
+
+    their_addr3.sin_family = AF_INET;     // host byte order
+    their_addr3.sin_port = htons(SERVERPORT); // short, network byte order
+    their_addr3.sin_addr = *((struct in_addr *)he3->h_addr);
+    memset(their_addr3.sin_zero, '\0', sizeof their_addr3.sin_zero);
+
+    if ((numbytes3=sendto(sockfd3, "FILE", 4, 0,
+             (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
+        perror("sendto");
+        exit(1);
+    }
+
+    printf("sent %d bytes to %s\n", numbytes3,
+        inet_ntoa(their_addr3.sin_addr));
+
+    close(sockfd3);
+                    
+                    
+                    
+                    
+                    
+                    //////////////////////////////////////
                     }
                 }else{                  // handle data from a client:error
                     if ((nbytes = recv(i, buf, sizeof buf, 0)) <= 0) {

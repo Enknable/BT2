@@ -467,8 +467,8 @@ if(FD_ISSET(i, &write_fds)){
     }
                     //CLIENT ASKING FOR MISSED PACKETS
                 
+                FD_CLR(sockfd, &master);
             
-
         fp2 = fopen("Newfile", "w");
         fseek(fp2, BT.sz, SEEK_SET);
         fputc('\n', fp2);

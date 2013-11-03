@@ -248,7 +248,12 @@ int main ( int argc, char *argv[] )
                                 get_in_addr((struct sockaddr*)&remoteaddr),
                                 s, INET6_ADDRSTRLEN),
                             new_fd);
-                    
+
+                    if (send(new_fd, &BT, sizeof BT, 0) == -1){
+                perror("send");
+            close(new_fd);
+            exit(0);
+        }
                     //////////////////////////////////////
                     
 

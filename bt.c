@@ -507,7 +507,7 @@ printf("listenerUDP: waiting to recvfrom...\n");
             write(fp2,BT.data, BT.length);
         
             
-            printf("%llu\n", BT.sqNum);
+            printf("%s\n", BT.data);
             
             
             

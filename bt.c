@@ -391,6 +391,17 @@ if(FD_ISSET(i, &write_fds)){
      // add the listener to the master set
      fdmax = sockfd;
     
+    
+    for(;;){
+    
+    read_fds = master;
+    write_fds = master;
+    
+        if (select(fdmax+1, &read_fds, &write_fds, NULL, NULL) == -1) {
+        perror("select");
+        exit(4);
+        
+    }
 
 if (sockfd2 == -1) {
                         perror("UDPaccept");
@@ -446,6 +457,7 @@ if (sockfd2 == -1) {
     /////////////////////////////////
 
     //close(sockfd2);
+    }
 }
        return 0;
      }

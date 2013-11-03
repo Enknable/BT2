@@ -305,13 +305,17 @@ int main ( int argc, char *argv[] )
 if(FD_ISSET(i, &write_fds)){
                         
                         memset(BT.data, 0, sizeof(BT.data));
+                        BT.sz = (uint64_t)st.st_size;
                         bytes_written = getChunk(sqNum, fp, BT.data, (uint64_t)st.st_size);
+                        sqNum++;
                         memcpy(&str, BT.data, bytes_written);
                         md5Start(&md);
                         md5Add(&md, str, sizeof(str));
                         md5End(&md, digest);
                         memcpy(&BT.md5, digest, sizeof(digest));
                         BT.length = bytes_written;
+                        BT.sz -= bytes_written;
+                        
                         if(BT.length == 0)
                             FD_CLR(i, &master);
                         

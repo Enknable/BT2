@@ -304,10 +304,9 @@ int main ( int argc, char *argv[] )
                 //RECVFROM SQ# GETCHUNK SEND SQ#...MD5
        */ }//TCP TRANS
     }//RECEIVE CLIENT DATA ERROR
-}// IFFDISSET
+// IFFDISSET
 
 //while "X" the amount written so far < SIZEOFFILE/CHUNKSIZE 
-    if(i != sockfd)
     
 
 }//FOR FD

@@ -99,7 +99,7 @@ int main ( int argc, char *argv[] )
            }
 
 
-         if(argv[optind] != NULL)                                                                                                                       //Holds the filename//Determines Server or Receiver
+         if(argv[optind] != NULL)       {                                                                                                                //Holds the filename//Determines Server or Receiver
          if (stat(argv[optind], &st) == 0)
             printf("%jd\n", (intmax_t)st.st_size);                                                                                                      //Hold the size of the file
     
@@ -217,5 +217,6 @@ int main ( int argc, char *argv[] )
 }// IFFDISSET
 }//FOR FD
 }//FOR..EVER
+}
        return 0;
      }

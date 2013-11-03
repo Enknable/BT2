@@ -55,6 +55,7 @@ int main ( int argc, char *argv[] )
     int index;
     int c;
     struct stat st;
+    time_t t;
     int sockfd, new_fd;  // listen on sock_fd, new connection on new_fd
     struct addrinfo hints, *servinfo, *p;
     struct sockaddr_storage their_addr; // connector's address information
@@ -95,7 +96,7 @@ int main ( int argc, char *argv[] )
     byte_t str[2048];
     char buf1[32], buf2[32];
    
-
+    srand((unsigned) time(&t));
     
        opterr = 0;
              
@@ -498,9 +499,11 @@ printf("listenerUDP: waiting to recvfrom...\n");
     memset(buf1, 0, sizeof(buf1));
     memset(buf2, 0, sizeof(buf2));
     
-
+    if(rand()%dvalue == 1);
+    continue;
     if(strncmp(buf1, buf2, 16) != 0)
     continue;
+
     printf("listenerUDP: got packet from %s\n",
         inet_ntop(their_addr2.ss_family,
             get_in_addr((struct sockaddr *)&their_addr2),

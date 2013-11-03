@@ -329,8 +329,8 @@ if(FD_ISSET(i, &write_fds)){
                             printf("sent %d bytes to %s\n", numbytes3,
                             inet_ntoa(their_addr3.sin_addr));
                             
-                            //if(BT.length == 0)
-                            //FD_CLR(i, &master);
+                            if(BT.length == 0)
+                            FD_CLR(i, &master);
         
     }
 //while "X" the amount written so far < SIZEOFFILE/CHUNKSIZE 

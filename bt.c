@@ -249,7 +249,6 @@ int main ( int argc, char *argv[] )
                                 get_in_addr((struct sockaddr*)&remoteaddr),
                                 s, INET6_ADDRSTRLEN),
                             new_fd);
-                        BT.data[sizeof(BT.data) -1] = '\0';
                         BT.sqNum = 0;
                     if (send(new_fd, &BT, sizeof BT, 0) == -1){
                 perror("send");
@@ -504,7 +503,7 @@ printf("listenerUDP: waiting to recvfrom...\n");
             //fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
             //fwrite(BT.data, 1, BT.length, fp);
             lseek(fp2, BT.sqNum*CHUNK_SIZE, SEEK_SET);
-            write(fp2,BT.data, BT.length);
+            //write(fp2,BT.data, BT.length);
         
             
             printf("%s\n", BT.data);

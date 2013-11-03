@@ -501,6 +501,7 @@ printf("listenerUDP: waiting to recvfrom...\n");
     memset(buf2, 0, sizeof(buf2));
     
     
+    
     drop = dvalue * 1000;
     printf("%i", drop);
     drop = (rand()%drop);

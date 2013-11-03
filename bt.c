@@ -391,6 +391,13 @@ if(FD_ISSET(i, &write_fds)){
      // add the listener to the master set
      fdmax = sockfd;
     
+    if (sockfd2 == -1) {
+                        perror("UDPaccept");
+                    } else {
+                        FD_SET(sockfd2, &master); // add to master set
+                        if (sockfd2 > fdmax)    // keep track of the max
+                            fdmax = sockfd2;
+                        }
     
     for(;;){
     
@@ -403,13 +410,7 @@ if(FD_ISSET(i, &write_fds)){
         
     }
 
-if (sockfd2 == -1) {
-                        perror("UDPaccept");
-                    } else {
-                        FD_SET(sockfd2, &master); // add to master set
-                        if (sockfd2 > fdmax)    // keep track of the max
-                            fdmax = sockfd2;
-                        }
+
     // keep track of the biggest file descriptor
          // so far, it's this one
     

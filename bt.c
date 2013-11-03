@@ -275,6 +275,8 @@ int main ( int argc, char *argv[] )
 
     freeaddrinfo(servinfo); // all done with this structure
     
+    
+    /* This won't be relevant until the request for TCP connection occurs
     if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
         perror("recv");
         exit(1);
@@ -285,7 +287,7 @@ int main ( int argc, char *argv[] )
     printf("client: received '%s'\n",buf);
 
     close(sockfd);
-    
+    */
     /////////////////////////////////
     
     memset(&hints2, 0, sizeof hints2);

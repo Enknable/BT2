@@ -13,6 +13,7 @@
 #include <string.h>
 #include <signal.h>
 #include "bt.h"
+#include <fcntl.h>
 
 #define CHUNK_SIZE 2048
 #define PORT "3490"
@@ -85,7 +86,7 @@ int main ( int argc, char *argv[] )
     int broadcast3 = 1;
     //char broadcast3 = '1'; // if that doesn't work, try this
     FILE * fp;
-    FILE *fp2;
+    int fp2;
     uint32_t bytes_written = 0; 
     uint32_t sqNum = 0;
     struct md5CTX md;
@@ -471,10 +472,8 @@ if(FD_ISSET(i, &write_fds)){
                 
                 FD_CLR(sockfd, &master);
             
-        fp2 = fopen("Newfile", "w");
-        fseek(fp2, BT.sz, SEEK_SET);
-        fputc('\n', fp2);
-        fclose(fp2);
+        fp2 = open("Newfile", O_WRONLY);
+        posix_fallocate(fp2, 0, BT.sz);
 }
 printf("listenerUDP: waiting to recvfrom...\n");
     addr_len2 = sizeof their_addr2;
@@ -499,9 +498,9 @@ printf("listenerUDP: waiting to recvfrom...\n");
     printf("listener: UDPpacket is %d bytes long\n", numbytes2);
     buf2[numbytes2] = '\0';
     printf("listener: UDPpacket contains \"%s\"\n", BT.data);
-            fp2 = fopen("Newfile", "wb");
-            fseek(fp2, BT.sqNum*CHUNK_SIZE, SEEK_SET);
-            fwrite(BT.data, BT.length, 1, fp2);
+            fp = fopen("Newfile", "wb");
+            fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
+            fwrite(BT.data, BT.length, 1, fp);
             printf("%llu\n", BT.sz);
             
             

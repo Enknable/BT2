@@ -91,6 +91,7 @@ int main ( int argc, char *argv[] )
     struct md5CTX md;
     byte_t digest[MD5_SZ];
     byte_t str[2048];
+   
 
     
        opterr = 0;
@@ -147,6 +148,7 @@ int main ( int argc, char *argv[] )
          if (stat(argv[optind], &st) == 0)
             printf("%jd\n", (intmax_t)st.st_size);                                                                                                      //Hold the size of the file
             
+            BT.sz = (uint64_t)st.st_size;
             fp = fopen(argv[optind], "rb");
     
     
@@ -305,8 +307,7 @@ int main ( int argc, char *argv[] )
 if(FD_ISSET(i, &write_fds)){
                         
                         memset(BT.data, 0, sizeof(BT.data));
-                        BT.sz = (uint64_t)st.st_size;
-                        bytes_written = getChunk(sqNum, fp, BT.data, (uint64_t)st.st_size);
+                        bytes_written = getChunk(sqNum, fp, BT.data, BT.sz);
                         sqNum++;
                         memcpy(&str, BT.data, bytes_written);
                         md5Start(&md);

@@ -494,7 +494,7 @@ printf("listenerUDP: waiting to recvfrom...\n");
     
     
     for (q=0;q<16;q++){
-                sprintf(buf1+(2*q), "%02x", bt.md5[q]);
+                sprintf(buf1+(2*q), "%02x", BT.md5[q]);
                      }
     for(q=0;q<16;q++){
         sprintf(buf2+(2*q), "%02x", digest[q]);

@@ -474,8 +474,7 @@ if(FD_ISSET(i, &write_fds)){
             
         fp2 = open("Newfile", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
         posix_fallocate(fp2, 0, 36);
-        write(fp2,"This will be output to testfile.txt\n", 36);
-        close(fp2);
+        
 }
 printf("listenerUDP: waiting to recvfrom...\n");
     addr_len2 = sizeof their_addr2;
@@ -504,6 +503,10 @@ printf("listenerUDP: waiting to recvfrom...\n");
             //setbuf(fp, NULL);
             //fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
             //fwrite(BT.data, 1, BT.length, fp);
+            lseek(fp2, BT.sqNum*CHUNK_SIZE, SEEK_SET);
+            write(fp2,BT.data, BT.length);
+        
+            
             printf("%llu\n", BT.sqNum);
             
             
@@ -528,5 +531,6 @@ printf("listenerUDP: waiting to recvfrom...\n");
     //close(sockfd2);
     }
 }
+close(fp2);
        return 0;
      }

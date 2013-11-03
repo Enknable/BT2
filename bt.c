@@ -296,7 +296,7 @@ int main ( int argc, char *argv[] )
 
 //while "X" the amount written so far < SIZEOFFILE/CHUNKSIZE 
     if(FD_ISSET(i, &write_fds)){
-        if ((numbytes3=sendto(sockfd3, "FILE", 4, 0,
+        if ((numbytes3=sendto(i, "FILE", 4, 0,
              (struct sockaddr *)&their_addr3, sizeof their_addr3)) == -1) {
         perror("sendto");
         exit(1);
@@ -309,7 +309,11 @@ int main ( int argc, char *argv[] )
 
 }//FOR FD
 }//FOR..EVER
-}else{                                                              // CLIENT  -- ADD SOCKFD to the master set for writing, CREATE A UDP SOCKET AND add it to the master set for READING
+}else{           // CLIENT  -- ADD SOCKFD to the master set for writing, CREATE A UDP SOCKET AND add it to the master set for READING
+    
+    FD_ZERO(&master);    // clear the master and temp sets
+    FD_ZERO(&read_fds);
+    
     memset(&hints, 0, sizeof hints);
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
@@ -336,6 +340,8 @@ int main ( int argc, char *argv[] )
         break;
     }
 
+        
+
     if (p == NULL) {
         fprintf(stderr, "client: failed to connect\n");
         return 2;
@@ -346,21 +352,6 @@ int main ( int argc, char *argv[] )
     printf("client: connecting to %s\n", s);
 
     freeaddrinfo(servinfo); // all done with this structure
-    
-    
-    /* This won't be relevant until the request for TCP connection occurs
-    if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
-        perror("recv");
-        exit(1);
-    }
-
-    buf[numbytes] = '\0';
-
-    printf("client: received '%s'\n",buf);
-
-    close(sockfd);
-    */
-    /////////////////////////////////
     
     memset(&hints2, 0, sizeof hints2);
     hints2.ai_family = AF_UNSPEC; // set to AF_INET to force IPv4
@@ -395,16 +386,35 @@ int main ( int argc, char *argv[] )
     }
 
     freeaddrinfo(servinfo);
+    
+     // add the listener to the master set
+     fdmax = sockfd;
+    
 
-    printf("listenerUDP: waiting to recvfrom...\n");
+if (sockfd2 == -1) {
+                        perror("UDPaccept");
+                    } else {
+                        FD_SET(sockfd2, &master); // add to master set
+                        if (sockfd2 > fdmax)    // keep track of the max
+                            fdmax = sockfd2;
+                        }
+    // keep track of the biggest file descriptor
+         // so far, it's this one
+    
+    
+    for(i = 0; i <= fdmax; i++) {
+            if (FD_ISSET(i, &read_fds)) { // we got one!!
+                //if (i == sockfd) {
+                    //CLIENT ASKING FOR MISSED PACKETS
+                //}
+            printf("listenerUDP: waiting to recvfrom...\n");
 
     addr_len2 = sizeof their_addr2;
-    if ((numbytes2 = recvfrom(sockfd2, buf2, MAXBUFLEN-1 , 0,
+    if ((numbytes2 = recvfrom(i, buf2, MAXBUFLEN-1 , 0,
         (struct sockaddr *)&their_addr2, &addr_len2)) == -1) {
         perror("recvfromUDP");
         exit(1);
     }
-
     printf("listenerUDP: got packet from %s\n",
         inet_ntop(their_addr2.ss_family,
             get_in_addr((struct sockaddr *)&their_addr2),
@@ -412,8 +422,29 @@ int main ( int argc, char *argv[] )
     printf("listener: UDPpacket is %d bytes long\n", numbytes2);
     buf2[numbytes2] = '\0';
     printf("listener: UDPpacket contains \"%s\"\n", buf2);
+            
+            
+            
+            
+            
+            }
+    }
+    
+    /* This won't be relevant until the request for TCP connection occurs
+    if ((numbytes = recv(sockfd, buf, MAXDATASIZE-1, 0)) == -1) {
+        perror("recv");
+        exit(1);
+    }
 
-    close(sockfd2);
+    buf[numbytes] = '\0';
+
+    printf("client: received '%s'\n",buf);
+
+    close(sockfd);
+    */
+    /////////////////////////////////
+
+    //close(sockfd2);
 }
        return 0;
      }

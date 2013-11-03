@@ -397,7 +397,7 @@ int main ( int argc, char *argv[] )
             get_in_addr((struct sockaddr *)&their_addr2),
             s, sizeof s));
     printf("listener: UDPpacket is %d bytes long\n", numbytes2);
-    buf2[numbytes] = '\0';
+    buf2[numbytes2] = '\0';
     printf("listener: UDPpacket contains \"%s\"\n", buf2);
 
     close(sockfd2);

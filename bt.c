@@ -249,7 +249,7 @@ int main ( int argc, char *argv[] )
                                 get_in_addr((struct sockaddr*)&remoteaddr),
                                 s, INET6_ADDRSTRLEN),
                             new_fd);
-
+                        BT.data[sizeof(BT.data) -1] = '\0';
                         BT.sqNum = 0;
                     if (send(new_fd, &BT, sizeof BT, 0) == -1){
                 perror("send");

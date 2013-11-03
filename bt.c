@@ -500,6 +500,10 @@ printf("listenerUDP: waiting to recvfrom...\n");
         sprintf(buf2+(2*q), "%02x", digest[q]);
     }
     
+    if(strncmp (buf1, buf2, 16) != 0){
+            printf("%s\n", buf1);
+            printf("%s\n", buf2);
+    }
     //if(strncmp (buf1, buf2, 16) != 0)
     //continue;
     printf("listenerUDP: got packet from %s\n",

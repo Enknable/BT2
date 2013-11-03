@@ -496,21 +496,9 @@ printf("listenerUDP: waiting to recvfrom...\n");
     md5End(&md, digest);
     
     memset(buf1, 0, sizeof(buf1));
-    
     memset(buf2, 0, sizeof(buf2));
     
-    
-    //for (q=0;q<16;q++){
-        //        sprintf(buf1+(2*q), "%02x", BT.md5[q]);
-      //               }
-    //for(q=0;q<16;q++){
-     //   sprintf(buf2+(2*q), "%02x", digest[q]);
-    //}
-    
-    //if(strncmp(buf1, buf2, 16) == 0){
-       //     printf("%s\n", buf1);
-     //       printf("%s\n", buf2);
-    //}
+
     if(strncmp(buf1, buf2, 16) != 0)
     continue;
     printf("listenerUDP: got packet from %s\n",
@@ -521,8 +509,10 @@ printf("listenerUDP: waiting to recvfrom...\n");
     buf3[numbytes2] = '\0';
     
             lseek(fp2, (BT.sqNum-1)*CHUNK_SIZE, SEEK_SET);
-            write(fp2,BT.data, BT.length);
-        
+            bytes_written += write(fp2,BT.data, BT.length);
+            if(bytes_written == st.st_size)
+                FD_CLR(i, &master);
+            
             
             printf("%s\n", BT.data);
             

@@ -470,8 +470,7 @@ if(FD_ISSET(i, &write_fds)){
             
 
         fp2 = fopen("Newfile", "w");
-        fseek(fp2, 4096, SEEK_SET);
-        fwrite("\n", 1, 1, fp2);
+
 }
 printf("listenerUDP: waiting to recvfrom...\n");
     addr_len2 = sizeof their_addr2;

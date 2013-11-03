@@ -239,10 +239,11 @@ int main ( int argc, char *argv[] )
                     
 
 
-    if ((he3=gethostbyname(ivalue)) == NULL) {  // get the host info
+    if ((he3=gethostbyname(bvalue)) == NULL) {  // get the host info
         perror("gethostbyname");
         exit(1);
     }
+    
 
     if ((sockfd3 = socket(AF_INET, SOCK_DGRAM, 0)) == -1) {
         perror("socket");

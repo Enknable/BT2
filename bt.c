@@ -150,7 +150,7 @@ int main ( int argc, char *argv[] )
             
             BT.sz = st.st_size;
             fp = fopen(argv[optind], "rb");
-    
+            memcpy(&BT.name, argv[optind], strlen(argv[optind]));
     
     FD_ZERO(&master);    // clear the master and temp sets
     FD_ZERO(&read_fds);
@@ -345,6 +345,10 @@ if(FD_ISSET(i, &write_fds)){
 }//FOR..EVER
 }else{           // CLIENT  -- ADD SOCKFD to the master set for writing, CREATE A UDP SOCKET AND add it to the master set for READING
     
+    fp2 = fopen(BT.name, "wb");
+    fseek(fp2, BT.sz, SEEK_SET);
+    
+    
     FD_ZERO(&master);    // clear the master and temp sets
     FD_ZERO(&read_fds);
     
@@ -478,7 +482,8 @@ if(FD_ISSET(i, &write_fds)){
     printf("listener: UDPpacket is %d bytes long\n", numbytes2);
     buf2[numbytes2] = '\0';
     printf("listener: UDPpacket contains \"%s\"\n", BT.data);
-            
+            fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
+            fwrite(BT.data, BT.length, 1, fp2);
             printf("%llu\n", BT.sz);
             
             

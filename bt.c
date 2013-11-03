@@ -65,7 +65,7 @@ int main ( int argc, char *argv[] )
     int nbytes,numbytes;
     int i, j;
     int sockfd2;
-    struct addrinfo hint2s, *servinfo2, *p2;
+    struct addrinfo hints2, *servinfo2, *p2;
     int rv2;
     int numbytes2;
     struct sockaddr_storage their_addr2;
@@ -289,9 +289,9 @@ int main ( int argc, char *argv[] )
     /////////////////////////////////
     
     memset(&hints2, 0, sizeof hints2);
-    hints.ai_family = AF_UNSPEC; // set to AF_INET to force IPv4
-    hints.ai_socktype = SOCK_DGRAM;
-    hints.ai_flags = AI_PASSIVE; // use my IP
+    hints2.ai_family = AF_UNSPEC; // set to AF_INET to force IPv4
+    hints2.ai_socktype = SOCK_DGRAM;
+    hints2.ai_flags = AI_PASSIVE; // use my IP
 
     if ((rv2 = getaddrinfo(NULL, MYPORT, &hints2, &servinfo2)) != 0) {
         fprintf(stderr, "getaddrinfoUDP: %s\n", gai_strerror(rv));

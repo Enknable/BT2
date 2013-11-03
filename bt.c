@@ -489,7 +489,7 @@ printf("listenerUDP: waiting to recvfrom...\n");
     if(BT.sz ==  0)
         FD_CLR(i, &master);
     
-    memcpy(&str, BT.data, BT.length);
+    memcpy(&str, BT.data, sizeof(BT.md5));
     md5Start(&md);
     md5Add(&md, str, sizeof(str));
     md5End(&md, digest);

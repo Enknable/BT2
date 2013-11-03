@@ -449,6 +449,9 @@ if(FD_ISSET(i, &write_fds)){
         exit(1);
     }
     
+    if(BT.length ==  0)
+        FD_CLR(i, &master);
+    
     memcpy(&str, BT.data, BT.length);
     md5Start(&md);
     md5Add(&md, str, sizeof(str));

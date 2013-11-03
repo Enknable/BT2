@@ -473,7 +473,8 @@ if(FD_ISSET(i, &write_fds)){
                 FD_CLR(sockfd, &master);
             
         fp2 = open("Newfile", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
-        posix_fallocate(fp2, 0, BT.sz);
+        posix_fallocate(fp2, 0, 36);
+        write(fp2,"This will be output to testfile.txt\n", 36);
         close(fp2);
 }
 printf("listenerUDP: waiting to recvfrom...\n");
@@ -499,10 +500,10 @@ printf("listenerUDP: waiting to recvfrom...\n");
     printf("listener: UDPpacket is %d bytes long\n", numbytes2);
     buf2[numbytes2] = '\0';
     //printf("listener: UDPpacket contains \"%s\"\n", BT.data);
-            fp = fopen("Newfile", "wb");
-            setbuf(fp, NULL);
-            fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
-            fwrite(BT.data, 1, BT.length, fp);
+            //fp = fopen("Newfile", "wb");
+            //setbuf(fp, NULL);
+            //fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
+            //fwrite(BT.data, 1, BT.length, fp);
             printf("%llu\n", BT.sqNum);
             
             

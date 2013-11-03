@@ -95,6 +95,7 @@ int main ( int argc, char *argv[] )
     byte_t digest[MD5_SZ];
     byte_t str[2048];
     char buf1[32], buf2[32];
+    int drop;
    
     srand((unsigned) time(&t));
     
@@ -499,7 +500,10 @@ printf("listenerUDP: waiting to recvfrom...\n");
     memset(buf1, 0, sizeof(buf1));
     memset(buf2, 0, sizeof(buf2));
     
-    if(rand()%dvalue == 1);
+    
+    drop = dvalue * 100;
+    
+    if(rand()%drop == 1);
     continue;
     if(strncmp(buf1, buf2, 16) != 0)
     continue;

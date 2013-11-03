@@ -501,7 +501,7 @@ printf("listenerUDP: waiting to recvfrom...\n");
             fp = fopen("Newfile", "wb");
             //fseek(fp, BT.sqNum*CHUNK_SIZE, SEEK_SET);
             //fwrite(BT.data, BT.length, 1, fp);
-            printf("%llu\n", BT.sz);
+            printf("%llu\n", BT.sqNum);
             
             
             

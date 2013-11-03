@@ -92,7 +92,7 @@ int main ( int argc, char *argv[] )
     struct md5CTX md;
     byte_t digest[MD5_SZ];
     byte_t str[2048];
-    char buf1[32], buf2[32];
+    char buf1[16], buf2[16];
    
 
     

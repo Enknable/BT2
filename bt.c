@@ -472,7 +472,7 @@ if(FD_ISSET(i, &write_fds)){
                 
                 FD_CLR(sockfd, &master);
             
-        fp2 = open("Newfile", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR | S_IXUSR);
+        fp2 = open("Newfile", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
         posix_fallocate(fp2, 0, BT.sz);
 }
 printf("listenerUDP: waiting to recvfrom...\n");

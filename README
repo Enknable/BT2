@@ -1,1 +1,51 @@
-Quickly reworking the BT transfer. 
+-----------------------------------------------------------------------------    BT UDP PROTOCOL #2   ------------------------------------------------------------------------------------------
+
+
+
+            The second implementation of the BT protocol transfer program aimed to improve upon the strategic errors and the overall lack of foresight that the first BT succombed to. The main problems with BT#1 were: 
+            
+                - A lack of an interactive command line. Leaving this part to the end was a mistake, I assumed that something simple would be easy to implement after all the heavy lifting
+            was finished but all the hard work just ended up piling on top of this simple aspect making it impossible to navigate without breaking something else. 
+            
+                - The main issue was definately the lack of broadcasting packets. I assumed that it would just be a matter of switching the sockopt and receiving IP address but it ended up being quite impossible to rework. 
+                On a positive note, BT#1 was quite effective at acknowledging lost packets, and recovering them in a sequencial manner. 
+                
+                - Other significant mistakes lent themselves to the BT#1 project falling just short of being a complete and well rounded program. Deciding to experiment with a non-selecting receiver was DEFINITELY one of 
+                those mistakes. This was probably the main consideration when deciding to rework BT#1 into BT#2. BT#2 utilizes select and its excellent timing features, making the timing implicit instead of a dynamic issue.
+                
+                
+            But, enough with the problems of BT#1, let's move on to the features that make BT#2 different, and also some of the pitfalls that BT#2 brought about. BT#2 was clearly superior in its organization; the foresight of select
+            and the simplicity of broadcasting as well as it's unique approach to minmizing packet loss. For BT#2 packet loss isn't a problem at all. Although the testing of files was limited to around 10MB, the strategy for reducing
+            packet loss was much more simple and effective than BT#1. Let's explain how packet reduction works on BT#2, it's shortcoming (which were a matter of a lack of time(BT#2 was a last minute decision to try to make a better
+            program) and a rather significant ignorance toward data types, pointers and memory addresses (which I will most definitely be improving upon)). The strategy that BT#2 takes as a sender is to spam the network with packets
+            and not worry about whether the receivers are getting every sequential packet. This is due to the fact that the Receivers are allocating the size of the file beforehand and filling in the empty spots with the packets they 
+            receive. This strategy has two benefits. First, it amplifies the effectiveness of multiple receivers listening on the network. Since each request for the file spawns a new socket that starts from the first Sequence Number
+            (AKA the first chunk of the file), this means that receivers can pick up packets from other receivers requests. Increasing exponentially the time and efficiency of the packet grabbing. The second advantage, and this is a big one
+            is that if you do happen to be left with missing chunks, you don't have to try and get the whole file again, you can just reenter the data stream and pick up whatever you need. The plan for this strategy did have a fallback though,
+            unfortunately I didn't have the time to implement it. It was simply a counter, every n packets sent, check the md5 of the file you received and before the sender every started writing the full md5 for the file would be in
+            the application header. I had some trouble with my irresponsibility with data types and pointer/memory in regards to implementing that though.
+            
+            Some of the problems with BT#2 are as follows:
+            
+                    There is no build in mechanism to the receivers that will stop them from reading packets from the network. Although this won't have any serious memory issues, since each file size if allocated beforehand. 
+                    
+                    The coding isn't very clean. I'll try to clean some of it up before I submit it but there aren't alot of comments and the indenting isn't formal. 
+                    
+                    The program doesn't figure of the broadcast address for you. It must be added on the command line. 
+                    
+                    There are ALOT of unreleased file descriptors and memory allocations. 
+                    
+                    
+            
+            Overall, BT#2 is a significant improvement over BT#1 in it's adherence to the specifications set forth in the assignment PDF. Although it lacks in the completeness that BT#1 has, which transmits the specified files, accurately 
+            and efficiently, accounting for packet loss. A major setback though, is that filenames and IP address must all be hard coded so it's definitely not user friendly. 
+            
+            
+            
+            
+                                                            -------------------------------------- THE PROTOCOL -------------------------------------
+                                                            Pretty straight forward protocol, lean with only the necessities. Filesize, Sequence Number, MD5
+                                                            and the length of the data guarantee the integrity of the data. A filename is included to suit the
+                                                            assignment specs. The data size was kept in the smaller range to reduce natural packet loss and
+                                                            data corruption. 
+            

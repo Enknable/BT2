@@ -113,7 +113,7 @@ int main ( int argc, char *argv[] )
              break;
            case 'p':
              pflag = 1;
-             PORT = atoi(optarg);
+             pvalue = atoi(optarg);
              
              if(pvalue == 0)
                 fprintf(stderr, "Option -p requires an integer port value.\n", optarg);
@@ -321,7 +321,6 @@ if(FD_ISSET(i, &write_fds)){
                         memset(BT.md5, 0, sizeof(BT.md5));
                         memset(digest, 0, sizeof(digest));
                         bytes_written = getChunk(sqNum, fp, BT.data, BT.sz);
-                        printf("%lu\n", bytes_written);
                         sqNum++;
                         BT.sqNum = sqNum;
                         memcpy(&str, BT.data, bytes_written);
